@@ -122,9 +122,11 @@ util.data_mapper{
 
 node.event("input", function(d, type, code, value)
     if type == 1 and value == 1 then -- EV_KEY, Key Press
-        if code == 104 then -- Page Up
+        -- Previous: PageUp(104), Up(103), Left(105)
+        if code == 104 or code == 103 or code == 105 then
             handle_channel_down()
-        elseif code == 109 then -- Page Down
+        -- Next: PageDown(109), Down(108), Right(106), Space(57), Enter(28)
+        elseif code == 109 or code == 108 or code == 106 or code == 57 or code == 28 then
             handle_channel_up()
         end
     end
