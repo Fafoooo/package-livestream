@@ -3,13 +3,21 @@
     "author": "Florian Wesch <fw@info-beamer.com>",
     "desc": "Play from various internet stream sources. Experimental",
     "lifecycle": "beta",
+    "permissions": [
+        "input"
+    ],
     "version": "sl-7.4.0",
-    "platforms": ["pi/epoch-1", "pi/epoch-2"],
+    "platforms": [
+        "pi/epoch-1",
+        "pi/epoch-2"
+    ],
     "runtime": {
         "outside_sources": true
     },
     "nesting": {
-        "parents": ["top-level"],
+        "parents": [
+            "top-level"
+        ],
         "childs": []
     }
 }
