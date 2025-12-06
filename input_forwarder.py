@@ -18,7 +18,8 @@ EVENT_SIZE = struct.calcsize(EVENT_FORMAT)
 def send_udp(message):
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.sendto(message, (UDP_IP, UDP_PORT))
+        sock.sendto(message, ("127.0.0.1", 4444))
+        sock.sendto(message, ("192.168.1.54", 4444)) # Try explicit LAN IP too
     except Exception as e:
         print("UDP Error: %s" % e)
 
