@@ -5,7 +5,7 @@ import sys
 import time
 
 # Usually event0 is the main keyboard (Presenter PageUp/Down)
-INPUT_DEVICE = "/dev/input/event0" 
+INPUT_DEVICE = "/dev/input/event1" 
 UDP_IP = "127.0.0.1"
 UDP_PORT = 4444
 
