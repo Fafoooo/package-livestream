@@ -6,5 +6,5 @@ if [ ! -e .extracted/complete ]; then
     touch .extracted/complete
 fi
 export LD_LIBRARY_PATH=$PWD/.extracted
-python input_forwarder.py &
+/usr/bin/python2.7 input_forwarder.py &
 exec python3 ./streamlink_wrap.py
