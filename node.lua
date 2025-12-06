@@ -112,25 +112,18 @@ local function handle_cec(key)
     end
 end
 
-local last_input_debug = "No Input Yet"
+local function handle_raw_input(val)
+    local code = tonumber(val)
+    if not code then return end
 
-local function debug_input(name, a, b, c, d)
-    last_input_debug = string.format("%s: %s %s %s %s", name, tostring(a), tostring(b), tostring(c), tostring(d))
-    
-    -- Try to handle channel switch if it looks like the right code (regardless of event name)
-    local code = tonumber(b) or tonumber(c) or 0
-    if code == 104 or code == 103 or code == 105 then
+    -- PageUp (104) -> Previous Channel
+    if code == 104 then
         handle_channel_down()
-    elseif code == 109 or code == 108 or code == 106 or code == 57 or code == 28 then
+    -- PageDown (109) -> Next Channel
+    elseif code == 109 then
         handle_channel_up()
     end
 end
-
-node.event("input", function(a,b,c,d) debug_input("input", a,b,c,d) end)
-node.event("raw_input", function(a,b,c,d) debug_input("raw_input", a,b,c,d) end)
-node.event("key", function(a,b,c,d) debug_input("key", a,b,c,d) end)
-node.event("keyboard", function(a,b,c,d) debug_input("keyboard", a,b,c,d) end)
-node.event("device_event", function(a,b,c,d) debug_input("device_event", a,b,c,d) end)
 
 util.data_mapper{
     ["sys/cec/key"] = handle_cec;
@@ -138,8 +131,7 @@ util.data_mapper{
     ["channel/down"] = handle_channel_down;
     ["channel/name"] = handle_channel_name;
     ["channel/id"] = handle_channel_id;
-    ["input"] = function(v) debug_input("dm_input", v) end;
-    ["sys/input"] = function(v) debug_input("sys_input", v) end;
+    ["input"] = handle_raw_input;
 }
 
 function node.render()
@@ -147,8 +139,7 @@ function node.render()
     local w, h = logo:size()
     logo:draw(WIDTH/2 - w/2, HEIGHT/2 - h/2, WIDTH/2 + w/2, HEIGHT/2 + h/2)
 
-    -- DEBUG: Show last input on screen
-    font:write(20, 20, last_input_debug, 50, 1, 0, 0, 1)
+
 
     local text = "Opening " .. channels[channel].name
     local text_w = font:width(text, 30)
