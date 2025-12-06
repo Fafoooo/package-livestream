@@ -1,6 +1,6 @@
 import struct
 
-INPUT_DEVICE = "/dev/input/event1"  # Adjust if needed
+INPUT_DEVICE = "/dev/input/event0"  # Adjust if needed
 UDP_IP = "127.0.0.1"
 UDP_PORT = 4444
 
