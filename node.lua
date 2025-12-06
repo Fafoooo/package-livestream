@@ -122,8 +122,19 @@ util.data_mapper{
 
 local last_input_debug = "No Input Yet"
 
-node.event("input", function(d, type, code, value)
-    last_input_debug = string.format("Typ:%d Cod:%d Val:%d", type, code, value)
+node.event("input", function(a, b, c, d, e)
+    last_input_debug = string.format("Args: %s %s %s %s %s", 
+        tostring(a), tostring(b), tostring(c), tostring(d), tostring(e))
+
+    -- Automatic detection of event signature
+    local type, code, value
+    if type(a) == "number" then
+        -- Signature: type, code, value
+        type, code, value = a, b, c
+    elseif type(b) == "number" then
+        -- Signature: device, type, code, value
+        type, code, value = b, c, d
+    end
 
     if type == 1 and value == 1 then -- EV_KEY, Key Press
         -- Previous: PageUp(104), Up(103), Left(105)
