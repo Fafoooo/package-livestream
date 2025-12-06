@@ -115,7 +115,7 @@ end
 local last_debug_code = "None"
 
 local function handle_raw_input(val)
-    last_debug_code = "Code: " .. tostring(val)
+    last_debug_code = "Mapped: " .. tostring(val)
     local code = tonumber(val)
     if not code then return end
 
@@ -128,13 +128,23 @@ local function handle_raw_input(val)
     end
 end
 
+-- Direct listener to catch EVERYTHING
+node.event("input", function(data, client)
+    last_debug_code = "Raw: " .. tostring(data)
+    -- Manual simple mapping if data_mapper fails
+    local prefix = "input:"
+    if data:sub(1, #prefix) == prefix then
+        handle_raw_input(data:sub(#prefix + 1))
+    end
+end)
+
 util.data_mapper{
     ["sys/cec/key"] = handle_cec;
     ["channel/up"] = handle_channel_up;
     ["channel/down"] = handle_channel_down;
     ["channel/name"] = handle_channel_name;
     ["channel/id"] = handle_channel_id;
-    ["input"] = handle_raw_input;
+    -- ["input"] = handle_raw_input; -- Temporarily disabled to avoid conflict if any, though usually data_mapper uses node.event("input") internally
 }
 
 function node.render()
