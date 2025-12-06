@@ -2,63 +2,92 @@
     "name": "Livestream",
     "control_ui": "control.html",
     "permissions": {
-        "network": "Needs to access stream"
+        "network": "Needs to access stream",
+        "input": "Needs to access keyboard/presenter"
     },
-    "options": [{
-        "title": "Channels",
-        "type": "section"
-    }, {
-        "title": "Channels",
-        "name": "channels",
-        "type": "list",
-        "itemname": "Stream",
-        "items": [{
-            "title": "Stream Name",
+    "options": [
+        {
+            "title": "Channels",
+            "type": "section"
+        },
+        {
+            "title": "Channels",
+            "name": "channels",
+            "type": "list",
+            "itemname": "Stream",
+            "items": [
+                {
+                    "title": "Stream Name",
+                    "ui_width": 4,
+                    "name": "name",
+                    "type": "string",
+                    "default": "My stream"
+                },
+                {
+                    "title": "Stream url (e.g. twitch.tv/<xyz>)",
+                    "ui_width": 8,
+                    "name": "url",
+                    "type": "string",
+                    "default": ""
+                }
+            ],
+            "default": [
+                {
+                    "name": "NASA TV Media",
+                    "url": "https://www.youtube.com/watch?v=P11y8N22Rq0"
+                },
+                {
+                    "name": "NASA Live - Earth From Space",
+                    "url": "https://www.youtube.com/watch?v=RtU_mdL2vBM"
+                }
+            ]
+        },
+        {
+            "title": "Misc",
+            "type": "section"
+        },
+        {
+            "title": "Logo",
             "ui_width": 4,
-            "name": "name",
-            "type": "string",
-            "default": "My stream"
-        }, {
-            "title": "Stream url (e.g. twitch.tv/<xyz>)",
-            "ui_width": 8,
-            "name": "url",
-            "type": "string",
-            "default": ""
-        }],
-        "default": [{
-            "name": "NASA TV Media",
-            "url": "https://www.youtube.com/watch?v=P11y8N22Rq0"
-        }, {
-            "name": "NASA Live - Earth From Space",
-            "url": "https://www.youtube.com/watch?v=RtU_mdL2vBM"
-        }]
-    }, 
-    
-    {
-        "title": "Misc",
-        "type": "section"
-    }, {
-        "title": "Logo",
-        "ui_width": 4,
-        "name": "logo",
-        "type": "resource",
-        "valid": ["image"],
-        "default": "package.png"
-    }, {
-        "title": "Audio",
-        "ui_width": 2,
-        "name": "audio",
-        "type": "boolean",
-        "default": true
-    }, {
-        "title": "Remote control channel switching",
-        "ui_width": 6,
-        "name": "cec_mapping",
-        "type": "select",
-        "options": [
-            [["channel-up", "channel-down"], "Using channel buttons (default)"],
-            [["up", "right"], "Up/right (for some odd TVs)"]
-        ],
-        "default": ["channel-up", "channel-down"]
-    }]
+            "name": "logo",
+            "type": "resource",
+            "valid": [
+                "image"
+            ],
+            "default": "package.png"
+        },
+        {
+            "title": "Audio",
+            "ui_width": 2,
+            "name": "audio",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "title": "Remote control channel switching",
+            "ui_width": 6,
+            "name": "cec_mapping",
+            "type": "select",
+            "options": [
+                [
+                    [
+                        "channel-up",
+                        "channel-down"
+                    ],
+                    "Using channel buttons (default)"
+                ],
+                [
+                    [
+                        "up",
+                        "right"
+                    ],
+                    "Up/right (for some odd TVs)"
+                ]
+            ],
+            "default": [
+                "channel-up",
+                "channel-down"
+            ]
+        }
+    ]
 }
