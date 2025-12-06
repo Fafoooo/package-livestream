@@ -121,6 +121,13 @@ util.data_mapper{
 }
 
 node.event("input", function(d, type, code, value)
+    -- DEBUG: Log input to file
+    local f = io.open("/tmp/input_debug.txt", "a")
+    if f then
+        f:write(string.format("Type: %d, Code: %d, Value: %d\n", type, code, value))
+        f:close()
+    end
+
     if type == 1 and value == 1 then -- EV_KEY, Key Press
         -- Previous: PageUp(104), Up(103), Left(105)
         if code == 104 or code == 103 or code == 105 then
