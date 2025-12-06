@@ -114,42 +114,6 @@ end
 
 util.data_mapper{
     ["sys/cec/key"] = handle_cec;
-    ["channel/up"] = handle_channel_up;
-    ["channel/down"] = handle_channel_down;
-    ["channel/name"] = handle_channel_name;
-    ["channel/id"] = handle_channel_id;
-}
-
-node.event("input", function(d, type, code, value)
-    -- DEBUG: Log input to file
-    local f = io.open("/tmp/input_debug.txt", "a")
-    if f then
-        f:write(string.format("Type: %d, Code: %d, Value: %d\n", type, code, value))
-        f:close()
-    end
-
-    if type == 1 and value == 1 then -- EV_KEY, Key Press
-        -- Previous: PageUp(104), Up(103), Left(105)
-        if code == 104 or code == 103 or code == 105 then
-            handle_channel_down()
-        -- Next: PageDown(109), Down(108), Right(106), Space(57), Enter(28)
-        elseif code == 109 or code == 108 or code == 106 or code == 57 or code == 28 then
-            handle_channel_up()
-        end
-    end
-end)
-
-function node.render()
-    gl.clear(1, 1, 1, 1)
-    local w, h = logo:size()
-    logo:draw(WIDTH/2 - w/2, HEIGHT/2 - h/2, WIDTH/2 + w/2, HEIGHT/2 + h/2)
-
-    local text = "Opening " .. channels[channel].name
-    local text_w = font:width(text, 30)
-    local x = WIDTH/2 - text_w/2
-    local y = HEIGHT/2 + w/2 + 40
-    x = x + font:write(x, y, text, 30, .2,.2,.8,1)
-    local dotdot = ("..."):sub(0, 1+math.floor(sys.now()*2 % 3)) 
     font:write(x, y, dotdot, 30, .2,.2,.8,1)
 
     send_channel()
