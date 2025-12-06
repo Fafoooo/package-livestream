@@ -10,8 +10,18 @@ EVENT_SIZE = struct.calcsize(EVENT_FORMAT)
 def send_udp(message):
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.sendto(message, ("127.0.0.1", 4444))
-        sock.sendto(message, ("192.168.1.54", 4444))
+        # Try sending to localhost and LAN, with and without newline
+        # to catch whatever the parser prefers.
+        targets = [("127.0.0.1", 4444), ("192.168.1.54", 4444)]
+        
+        # Send raw
+        for t in targets:
+            sock.sendto(message, t)
+            
+        # Send with newline
+        for t in targets:
+            sock.sendto(message + "\n", t)
+            
         print "UDP Sent:", message
     except Exception as e:
         print "UDP Error:", e
