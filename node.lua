@@ -128,8 +128,30 @@ local function handle_raw_input(val)
     end
 end
 
--- Direct listener removed: util.data_mapper handles UDP packets internally.
+util.data_mapper{
+    ["sys/cec/key"] = handle_cec;
+    ["channel/up"] = handle_channel_up;
+    ["channel/down"] = handle_channel_down;
+    ["channel/name"] = handle_channel_name;
+    ["channel/id"] = handle_channel_id;
+    ["my_input"] = handle_raw_input;
+}
 
+function node.render()
+    gl.clear(1, 1, 1, 1)
+    local w, h = logo:size()
+    logo:draw(WIDTH/2 - w/2, HEIGHT/2 - h/2, WIDTH/2 + w/2, HEIGHT/2 + h/2)
+
+    -- Tick counter to verify screen updates
+    local tick = math.floor(sys.now() * 10) % 100
+    local debug_text = string.format("[%02d] %s", tick, last_debug_code)
+    font:write(10, 10, debug_text, 40, 1, 0, 0, 1)
+
+    local text = "Opening " .. channels[channel].name
+    local text_w = font:width(text, 30)
+    local x = WIDTH/2 - text_w/2
+    local y = HEIGHT/2 + w/2 + 40
+    x = x + font:write(x, y, text, 30, .2,.2,.8,1)
     local dotdot = ("..."):sub(0, 1+math.floor(sys.now()*2 % 3)) 
     font:write(x, y, dotdot, 30, .2,.2,.8,1)
 

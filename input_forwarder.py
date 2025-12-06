@@ -12,6 +12,7 @@ def send_udp(message):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.sendto(message, ("127.0.0.1", 4444))
         sock.sendto(message, ("192.168.1.54", 4444))
+        print "UDP Sent:", message
     except Exception as e:
         print "UDP Error:", e
 
@@ -30,7 +31,7 @@ def main():
                     if type == 1 and (value == 1 or value == 2):
                         print "Key pressed:", code
                         sys.stdout.flush()
-                        send_udp("input:%d" % code)
+                        send_udp("my_input:%d" % code)
         except Exception as e:
             print "Error:", e
             sys.stdout.flush()
