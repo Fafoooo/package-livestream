@@ -112,7 +112,10 @@ local function handle_cec(key)
     end
 end
 
+local last_debug_code = "None"
+
 local function handle_raw_input(val)
+    last_debug_code = "Code: " .. tostring(val)
     local code = tonumber(val)
     if not code then return end
 
@@ -138,6 +141,8 @@ function node.render()
     gl.clear(1, 1, 1, 1)
     local w, h = logo:size()
     logo:draw(WIDTH/2 - w/2, HEIGHT/2 - h/2, WIDTH/2 + w/2, HEIGHT/2 + h/2)
+
+    font:write(10, 10, last_debug_code, 40, 1, 0, 0, 1)
 
 
 
