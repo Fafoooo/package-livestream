@@ -112,40 +112,35 @@ local function handle_cec(key)
     end
 end
 
+local last_input_debug = "No Input Yet"
+
+local function debug_input(name, a, b, c, d)
+    last_input_debug = string.format("%s: %s %s %s %s", name, tostring(a), tostring(b), tostring(c), tostring(d))
+    
+    -- Try to handle channel switch if it looks like the right code (regardless of event name)
+    local code = tonumber(b) or tonumber(c) or 0
+    if code == 104 or code == 103 or code == 105 then
+        handle_channel_down()
+    elseif code == 109 or code == 108 or code == 106 or code == 57 or code == 28 then
+        handle_channel_up()
+    end
+end
+
+node.event("input", function(a,b,c,d) debug_input("input", a,b,c,d) end)
+node.event("raw_input", function(a,b,c,d) debug_input("raw_input", a,b,c,d) end)
+node.event("key", function(a,b,c,d) debug_input("key", a,b,c,d) end)
+node.event("keyboard", function(a,b,c,d) debug_input("keyboard", a,b,c,d) end)
+node.event("device_event", function(a,b,c,d) debug_input("device_event", a,b,c,d) end)
+
 util.data_mapper{
     ["sys/cec/key"] = handle_cec;
     ["channel/up"] = handle_channel_up;
     ["channel/down"] = handle_channel_down;
     ["channel/name"] = handle_channel_name;
     ["channel/id"] = handle_channel_id;
+    ["input"] = function(v) debug_input("dm_input", v) end;
+    ["sys/input"] = function(v) debug_input("sys_input", v) end;
 }
-
-local last_input_debug = "No Input Yet"
-
-node.event("input", function(a, b, c, d, e)
-    last_input_debug = string.format("Args: %s %s %s %s %s", 
-        tostring(a), tostring(b), tostring(c), tostring(d), tostring(e))
-
-    -- Automatic detection of event signature
-    local type, code, value
-    if type(a) == "number" then
-        -- Signature: type, code, value
-        type, code, value = a, b, c
-    elseif type(b) == "number" then
-        -- Signature: device, type, code, value
-        type, code, value = b, c, d
-    end
-
-    if type == 1 and value == 1 then -- EV_KEY, Key Press
-        -- Previous: PageUp(104), Up(103), Left(105)
-        if code == 104 or code == 103 or code == 105 then
-            handle_channel_down()
-        -- Next: PageDown(109), Down(108), Right(106), Space(57), Enter(28)
-        elseif code == 109 or code == 108 or code == 106 or code == 57 or code == 28 then
-            handle_channel_up()
-        end
-    end
-end)
 
 function node.render()
     gl.clear(1, 1, 1, 1)
