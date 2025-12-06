@@ -120,6 +120,16 @@ util.data_mapper{
     ["channel/id"] = handle_channel_id;
 }
 
+node.event("input", function(d, type, code, value)
+    if type == 1 and value == 1 then -- EV_KEY, Key Press
+        if code == 104 then -- Page Up
+            handle_channel_down()
+        elseif code == 109 then -- Page Down
+            handle_channel_up()
+        end
+    end
+end)
+
 function node.render()
     gl.clear(1, 1, 1, 1)
     local w, h = logo:size()
