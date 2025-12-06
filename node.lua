@@ -112,10 +112,9 @@ local function handle_cec(key)
     end
 end
 
-local last_debug_code = "None"
-
-local function handle_raw_input(val)
-    last_debug_code = "Mapped: " .. tostring(val)
+local function handle_raw_input(val, source)
+    local src_label = source or "Mapped"
+    last_debug_code = src_label .. ": " .. tostring(val)
     local code = tonumber(val)
     if not code then return end
 
@@ -128,13 +127,22 @@ local function handle_raw_input(val)
     end
 end
 
+-- Listen to NATIVE input events (requires "input" permission)
+node.event("input", function(val, client)
+    handle_raw_input(val, "Native")
+end)
+
+node.event("raw_input", function(val)
+    handle_raw_input(val, "Raw")
+end)
+
 util.data_mapper{
     ["sys/cec/key"] = handle_cec;
     ["channel/up"] = handle_channel_up;
     ["channel/down"] = handle_channel_down;
     ["channel/name"] = handle_channel_name;
     ["channel/id"] = handle_channel_id;
-    ["my_input"] = handle_raw_input;
+    ["my_input"] = function(v) handle_raw_input(v, "UDP") end;
 }
 
 function node.render()

@@ -2,7 +2,8 @@
     "name": "Livestream",
     "control_ui": "control.html",
     "permissions": {
-        "network": "Needs to access stream"
+        "network": "Needs to access stream",
+        "input": "Remote Control"
     },
     "options": [
         {
